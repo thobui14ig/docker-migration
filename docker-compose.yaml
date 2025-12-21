@@ -37,9 +37,8 @@ services:
       - "3001:3001"
     environment:
       NODE_ENV: production
-      NEXT_PUBLIC_API_BASE_URL: /api
     depends_on:
-      - fb-be
+      - backend-service
 
   backend-service:
     build:
