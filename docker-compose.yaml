@@ -1,0 +1,159 @@
+version: "2.1"
+
+services:
+  postgres:
+    image: postgres
+    container_name: database
+    restart: always
+    environment:
+      - POSTGRES_USER=thobui14ig
+      - POSTGRES_PASSWORD=thobui14ig
+      - POSTGRES_DB=crawl
+    volumes:
+      - postgres-volume:/var/lib/postgresql
+    ports:
+      - 5432:5432
+
+  frontend-seo:
+    build:
+      context: ./../frontend-seo
+      dockerfile: Dockerfile
+    container_name: frontend-seo
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - backend-service
+
+  backend-service:
+    build:
+      context: ./../backend-service
+      dockerfile: Dockerfile
+    container_name: backend-service
+    restart: always
+    environment:
+      PORT: 4000
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER_NAME: thobui14ig
+      DB_PASSWORD: thobui14ig
+      DB_DATABASE: crawl
+
+      CRONJOB_SERVICE: cronjob-service:5000
+      COMMENT_SERVICE: comment-service:6000
+    ports:
+      - "4000:4000"
+    depends_on:
+      - redis
+      - postgres
+
+  cronjob-service:
+    build:
+      context: ./../cronjob-service
+      dockerfile: Dockerfile
+    container_name: cronjob-service
+    restart: always
+    environment:
+      PORT: 5000
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER_NAME: thobui14ig
+      DB_PASSWORD: thobui14ig
+      DB_DATABASE: crawl
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TYPE: single
+    ports:
+      - "5000:5000"
+    depends_on:
+      - redis
+      - postgres
+
+  comment-service:
+    build:
+      context: ./../comment-service
+      dockerfile: Dockerfile
+    container_name: comment-service
+    restart: always
+    environment:
+      PORT: 6000
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER_NAME: thobui14ig
+      DB_PASSWORD: thobui14ig
+      DB_DATABASE: crawl
+
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TYPE: single
+    ports:
+      - "6000:6000"
+    depends_on:
+      - redis
+      - postgres
+
+  # go-service-1:
+  #   build: ./../go
+  #   container_name: go-service-1
+  #   restart: always
+  #   ports:
+  #     - "7000:7000"
+  #   environment:
+  #     APP_ENV: production
+  #     PORT: 7000
+  #     REDIS_HOST: redis:6379
+  #     REDIS_PORT: 6379
+  #     COMMENT_SERVICE: comment-service:6000
+  #   depends_on:
+  #     - redis
+
+  # go-service-2:
+  #   build: ./../go
+  #   container_name: go-service-2
+  #   restart: always
+  #   ports:
+  #     - "7001:7001"
+  #   environment:
+  #     APP_ENV: production
+  #     PORT: 7001
+  #     REDIS_HOST: redis:6379
+  #     REDIS_PORT: 6379
+  #     COMMENT_SERVICE: comment-service:6000
+  #   depends_on:
+  #     - redis
+
+  # go-service-3:
+  #   build: ./../go
+  #   container_name: go-service-3
+  #   restart: always
+  #   ports:
+  #     - "7002:7002"
+  #   environment:
+  #     APP_ENV: production
+  #     PORT: 7002
+  #     REDIS_HOST: redis:6379
+  #     REDIS_PORT: 6379
+  #     COMMENT_SERVICE: comment-service:6000
+  #   depends_on:
+  #     - redis
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+
+volumes:
+  postgres-volume:
+    driver: local
+  redis-data:
