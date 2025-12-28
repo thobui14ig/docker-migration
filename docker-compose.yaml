@@ -111,20 +111,20 @@ services:
       - redis
       - postgres
 
-  # go-service-1:
-  #   build: ./../go
-  #   container_name: go-service-1
-  #   restart: always
-  #   ports:
-  #     - "7000:7000"
-  #   environment:
-  #     APP_ENV: production
-  #     PORT: 7000
-  #     REDIS_HOST: redis:6379
-  #     REDIS_PORT: 6379
-  #     COMMENT_SERVICE: comment-service:6000
-  #   depends_on:
-  #     - redis
+  go-service-1:
+    build: ./../go
+    container_name: go-service-1
+    restart: always
+    ports:
+      - "7000:7000"
+    environment:
+      APP_ENV: production
+      PORT: 7000
+      REDIS_HOST: redis:6379
+      REDIS_PORT: 6379
+      COMMENT_SERVICE: comment-service:6000
+    depends_on:
+      - redis
 
   # go-service-2:
   #   build: ./../go
