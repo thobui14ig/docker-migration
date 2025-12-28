@@ -14,8 +14,6 @@ CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    expired_at TIMESTAMP NOT NULL,
-    link_limit INT DEFAULT NULL,
     level INT DEFAULT 0,
     is_deleted BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP(6) DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') NOT NULL
@@ -33,7 +31,7 @@ CREATE TABLE links (
     last_comment_time TIMESTAMP(6) DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') NOT NULL,
     delay_time INT DEFAULT 0,
     status link_status NOT NULL DEFAULT 'pending',
-    type link_type NOT NULL,
+    type link_type NOT NULL DEFAULT 'undefined',
     process BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP(6) DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') NOT NULL,
     is_deleted BOOLEAN DEFAULT FALSE,
@@ -108,6 +106,9 @@ ADD CONSTRAINT uq_links_user_post
 UNIQUE (user_id, post_id);
 
 
+ALTER TABLE users
+DROP COLUMN link_limit,
+DROP COLUMN expired_at;
 
 
 
