@@ -134,6 +134,7 @@ services:
     depends_on:
       - postgres
       - comment-service
+  
   redis:
     image: redis:7-alpine
     container_name: redis

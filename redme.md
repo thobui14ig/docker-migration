@@ -91,6 +91,23 @@ CREATE TABLE vps (
     status vps_status NOT NULL DEFAULT 'live'
 );
 
+CREATE TABLE orders (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    content TEXT,
+    amount NUMERIC(20, 2) NOT NULL DEFAULT 0.00,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'rejected', 'cancelled')),
+    created_at TIMESTAMP(6) DEFAULT (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') NOT NULL,
+    
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Tạo indexes
+CREATE INDEX idx_orders_user_id ON orders(user_id);
+CREATE INDEX idx_orders_status ON orders(status);
+CREATE INDEX idx_orders_created_at ON orders(created_at);
+
+
 CREATE INDEX idx_links_user_id ON links(user_id);
 CREATE INDEX idx_comments_link_id ON comments(link_id);
 CREATE INDEX idx_links_status ON links(status);
@@ -104,12 +121,6 @@ UNIQUE (link_id, cmt_id);
 ALTER TABLE links
 ADD CONSTRAINT uq_links_user_post
 UNIQUE (user_id, post_id);
-
-
-ALTER TABLE users
-DROP COLUMN link_limit,
-DROP COLUMN expired_at;
-
 
 
 ```
