@@ -113,6 +113,20 @@ CREATE TABLE phone_numbers (
   phone_number TEXT NOT NULL UNIQUE
 );
 
+CREATE TABLE group_link (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  user_id INTEGER NOT NULL,
+
+  CONSTRAINT fk_group_link_user
+    FOREIGN KEY (user_id)
+    REFERENCES users(id)
+    ON DELETE CASCADE
+);
+
+ALTER TABLE links
+ADD COLUMN group_id INTEGER;
+
 
 -- Tạo indexes
 CREATE INDEX idx_orders_user_id ON orders(user_id);
