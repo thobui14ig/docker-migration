@@ -84,9 +84,7 @@ services:
       - postgres
 
   comment-service:
-    build:
-      context: ./../comment-service
-      dockerfile: Dockerfile
+    image: thobui1996/comment-service:latest
     container_name: comment-service
     restart: always
     environment:
@@ -108,9 +106,7 @@ services:
       - postgres
 
   sync-comment-service:
-    build:
-      context: ./../sync-comment-service
-      dockerfile: Dockerfile
+    image: thobui1996/sync-comment-service:latest
     container_name: sync-comment-service
     restart: always
     ports:
