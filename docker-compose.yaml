@@ -26,9 +26,7 @@ services:
       - backend-service
 
   frontend-user:
-    build:
-      context: ./../frontend-user
-      dockerfile: Dockerfile
+    mage: thobui1996/frontend-user:latest
     container_name: frontend-user
     restart: always
     ports:
