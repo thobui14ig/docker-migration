@@ -62,9 +62,7 @@ services:
       - postgres
 
   cronjob-service:
-    build:
-      context: ./../cronjob-service
-      dockerfile: Dockerfile
+    image: thobui1996/cronjob-service:latest
     container_name: cronjob-service
     restart: always
     environment:
