@@ -26,7 +26,7 @@ services:
       - backend-service
 
   frontend-user:
-    mage: thobui1996/frontend-user:latest
+    image: thobui1996/frontend-user:latest
     container_name: frontend-user
     restart: always
     ports:
