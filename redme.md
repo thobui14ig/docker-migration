@@ -108,6 +108,11 @@ CREATE TABLE groups (
   group_id TEXT UNIQUE NOT NULL
 );
 
+CREATE TABLE phone_numbers (
+  id SERIAL PRIMARY KEY,
+  phone_number TEXT NOT NULL UNIQUE
+);
+
 
 -- Tạo indexes
 CREATE INDEX idx_orders_user_id ON orders(user_id);

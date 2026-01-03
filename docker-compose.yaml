@@ -41,9 +41,7 @@ services:
       - backend-service
 
   backend-service:
-    build:
-      context: ./../backend-service
-      dockerfile: Dockerfile
+    image: thobui1996/backend-service:latest
     container_name: backend-service
     restart: always
     environment:
@@ -134,7 +132,7 @@ services:
     depends_on:
       - postgres
       - comment-service
-  
+
   redis:
     image: redis:7-alpine
     container_name: redis
