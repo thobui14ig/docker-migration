@@ -15,9 +15,7 @@ services:
       - 5432:5432
 
   frontend-seo:
-    build:
-      context: ./../frontend-seo
-      dockerfile: Dockerfile
+    image: thobui1996/frontend-seo:latest
     container_name: frontend-seo
     restart: always
     ports:
