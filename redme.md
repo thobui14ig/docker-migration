@@ -102,6 +102,10 @@ CREATE TABLE orders (
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+
+ALTER TABLE users
+ADD COLUMN plan_id INTEGER;
+
 CREATE TABLE groups (
   id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
@@ -127,6 +131,8 @@ CREATE TABLE group_link (
 ALTER TABLE links
 ADD COLUMN group_id INTEGER;
 
+ALTER TABLE users
+ADD COLUMN balance BIGINT NOT NULL DEFAULT 0;
 
 -- Tạo indexes
 CREATE INDEX idx_orders_user_id ON orders(user_id);
@@ -147,6 +153,9 @@ UNIQUE (link_id, cmt_id);
 ALTER TABLE links
 ADD CONSTRAINT uq_links_user_post
 UNIQUE (user_id, post_id);
+
+ALTER TABLE orders
+ADD COLUMN is_confirm BOOLEAN NOT NULL DEFAULT FALSE;
 
 
 ```
