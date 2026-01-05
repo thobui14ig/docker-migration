@@ -123,6 +123,28 @@ services:
       - postgres
       - comment-service
 
+  sync-comment-service-1:
+    image: thobui1996/sync-comment-service:latest
+    container_name: sync-comment-service-1
+    restart: always
+    ports:
+      - "7001:7001"
+    environment:
+      PORT: 7001
+      DB_TYPE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER_NAME: thobui14ig
+      DB_PASSWORD: thobui14ig
+      DB_DATABASE: crawl
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      REDIS_TYPE: single
+      COMMENT_SERVICE: comment-service:6000
+    depends_on:
+      - postgres
+      - comment-service
+
   redis:
     image: redis:7-alpine
     container_name: redis
