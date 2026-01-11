@@ -128,6 +128,13 @@ CREATE TABLE group_link (
     ON DELETE CASCADE
 );
 
+
+CREATE TABLE auto_comment (
+    id SERIAL PRIMARY KEY,
+    post_id TEXT NOT NULL,
+    is_comment BOOLEAN NOT NULL DEFAULT false
+);
+
 ALTER TABLE links
 ADD COLUMN group_id INTEGER;
 
